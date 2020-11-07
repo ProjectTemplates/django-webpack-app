@@ -23,7 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+{% if cookiecutter.use_redis == "No" -%}
     'django.contrib.sessions',
+{%- endif %}
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
@@ -75,6 +77,22 @@ DATABASES = {
         'PORT': env.str('DB_PORT'),
     }
 }
+
+{% if cookiecutter.use_redis == "Yes" -%}
+REDIS_URI=env.str('REDIS_URI')
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{REDIS_URI}/{env.str('REDIS_DJANGO_CACHE_DB')}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+{%- endif %}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
