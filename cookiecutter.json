@@ -1,0 +1,8 @@
+{
+    "full_name": "",
+    "email": "",
+    "project_name": "project",
+    "project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
+    "version": "0.1.0",
+    "use_redis": ["No", "Yes"]
+}

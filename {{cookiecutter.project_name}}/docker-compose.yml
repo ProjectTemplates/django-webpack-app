@@ -1,0 +1,71 @@
+version: "3.4"
+
+networks:
+  default:
+
+services:
+  core: &service
+    container_name: {{cookiecutter.project_slug}}-core
+    restart: unless-stopped
+    networks:
+      - default
+    depends_on: &service-dependencies
+      - postgres
+      - redis
+    # Dev params
+    entrypoint:
+      - gunicorn
+      - server.wsgi
+      - --bind=0.0.0.0:8000
+      - --workers=1
+      - --reload
+    volumes:
+      - ./core:/opt/app
+      - ./static:/opt/static
+    build:
+      context: core
+      dockerfile: deployment/docker/Dockerfile.server
+      args:
+        RUN_LEVEL: dev
+
+  postgres:
+    container_name: {{cookiecutter.project_slug}}-postgres
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: database
+    networks:
+      - default
+    volumes:
+      - ./.docker_data/postgres:/var/lib/postgresql/data
+
+  nginx:
+    build:
+      context: nginx
+    container_name: {{cookiecutter.project_slug}}-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf:/etc/nginx/conf
+      - ./static:/www/data/static
+    depends_on:
+      - core
+    networks:
+      - default
+
+{%- if cookiecutter.use_redis == "Yes" %}
+  redis:
+    container_name: {{cookiecutter.project_slug}}-redis
+    image: library/redis:6
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    networks:
+      - default
+    volumes:
+    - ./.docker_data/redis:/var/lib/redis
+{%- endif %}
