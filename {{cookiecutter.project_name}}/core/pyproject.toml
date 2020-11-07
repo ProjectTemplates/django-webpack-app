@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "innohack-backend"
+name = "{{cookiecutter.project_slug}}-backend"
 version = "0.1.0"
-description = "Server side for innohack project"
+description = "Server side for {{cookiecutter.project_slug}} project"
 authors = ["Igor Beschastnov <beschastnovigor@gmail.com>"]
 
 [tool.poetry.dependencies]
