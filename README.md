@@ -18,7 +18,8 @@ Uses **PostgreSQL** for storage, but you can change it to any other SQL database
 
 Генерирует каркас django-сервиса с настроенным nginx, базой, и опциональным redis (для использования как кэш сессий, либо для какой-либо бизнес-логики) и некоторыми дополнительными пакетами (drf, сваггер генератор и пр.). Для контроля зависимостей используется poetry.
 
-Основная фишка - [webpack.config.js](https://github.com/ProjectTemplates/django-webpack-app/blob/master/%7B%7Bcookiecutter.project_name%7D%7D/core/webpack.config.js), на одном уровне с manage.py, позволяющий рядом с разработкой бэкенда писать фронтовый код, с библиотеками, npm и прочим, который затем можно использовать в django-шаблонах - я, например, так рисовал графики в админке. См. [django-webpack-loader](https://github.com/jezdez/django-webpack-loader) (правда тут он настроен чуть иначе чем в примерах)
+Основная фишка - [webpack.config.js](https://github.com/ProjectTemplates/django-webpack-app/blob/master/%7B%7Bcookiecutter.project_name%7D%7D/core/webpack.config.js), на одном уровне с manage.py, позволяющий рядом с разработкой бэкенда писать фронтовый код, с библиотеками, npm и прочим, который затем можно использовать в django-шаблонах - я, например, так рисовал графики в админке - https://github.com/VoidDruid/innohack-backend/tree/master/core (assets/lib - код на js, server/templates/... - шаблоны в которых он используется). Код с хакатона, так что качество понятно какое.
+За подробносятми - см. [django-webpack-loader](https://github.com/jezdez/django-webpack-loader) (правда тут он настроен чуть иначе чем в примерах)
 
 В качестве хранилища используется PostgreSQL, но после генерации проекта можно заменить на любое другое.
 
